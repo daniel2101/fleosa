@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+##############################################################################
+#
+#    Desarrollado por rNet Soluciones
+#    Jefe de Proyecto: Ing. Ulises Tlatoani Vidal Rieder
+#    Desarrollador: Ing. Salvador Daniel Pelayo Gómez.
+#    Analista: Lic. David Padilla Bobadilla
+#
+##############################################################################
+-->
+
+<openerp>
+    <data>
+        
+        <menuitem name="Fleosa" id="menu_fleosa" icon="terp-personal"
+            web_icon="images/fleosa.png"
+            web_icon_hover="images/fleosa_hover.png"/>
+    </data>
+</openerp>

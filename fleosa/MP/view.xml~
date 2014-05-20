@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_fleosa_product_form" model="ir.ui.view">
+            <field name="name">view.fleosa.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="purchase_ok" position="after">
+                    <field name="tipo_flete" />
+                </field>
+                <xpath expr="/form/notebook" position="before">
+                    <group colspan="4" col="8" attrs="{'invisible':[('tipo_flete','=',False)]}">
+                        <separator string="Datos de flete" colspan="8"/>
+                        <field name="pais_id" invisible="1"/>
+                        <group colspan="4" col="2">
+                            <separator string="Origen"/>
+                            <field name="origen_ciudad"/>
+                            <field name="origen_estado_id"/>
+                        </group>
+                        <group colspan="4" col="2">
+                            <separator string="Destino"/>
+                            <field name="destino_ciudad"/>
+                            <field name="destino_estado_id"/>
+                        </group>
+                        <separator string="" colspan="8"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

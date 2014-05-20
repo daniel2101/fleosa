@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_fleosa_sale_order_form" model="ir.ui.view">
+            <field name="name">view.fleosa.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="client_order_ref" position="after">
+                    <field name="carta_porte_id"/>
+                </field>
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" readonly="1"/>
+                </field>
+                <field name="partner_order_id" position="replace">
+                    <field name="partner_destinatario_id" readonly="1"/>
+                </field>
+                <field name="partner_shipping_id" position="replace">
+                    <field name="partner_shipping_id" readonly="1"/>
+                </field>
+                <field name="partner_shipping_id" position="after">
+                    <field name="partner_direccion_remitente" readonly="1"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

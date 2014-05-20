@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- VISTA DE ARBOL LOGISTICA (Pedidos de Venta) -->
+        <record id="view_fleosa_logistica_tree" model="ir.ui.view">
+            <field name="name">view.fleosa.logistica.tree</field>
+            <field name="model">fleosa.ml.cp</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree colors="red:state=='cancelado';gray:state=='ventas';blue:state=='borrador';green:state=='entregado';orange:state=='en_curso'" string="Logistica">
+                    <field name="name" select="1"/>
+                    <field name="date_order" select="1"/>
+                    <field name="partner_id" select="1"/>
+                    <field name="destinatario" select="1"/>
+                    <field name="producto_transportar"/>
+                    <field name="user_id"/>
+                    <field name="unidad"/>
+                    <field name="state" select="1"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- VISTA DE FORMULARIO LOGISTICA (Pedidos de Venta) -->
+        <record id="view_fleosa_logistica_form" model="ir.ui.view">
+            <field name="name">view.fleosa.logistica.form</field>
+            <field name="model">fleosa.ml.cp</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Logistica">
+                    <group colspan="4">
+                        <field name="name" colspan="2"/>
+                        <field name="date_order"/>
+                        <field name="fecha_embarque"/>
+                        <field name="fecha_entrega"/>
+                        <field name="origen"/>
+                        <field name="destino"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Datos de Envio">
+                            <separator string="Datos del Producto a transportar" colspan="4"/>
+                            <group col="6" colspan="4">
+                                <field name="producto_transportar"/>
+                                <field name="cantidad"/>
+                                <field name="valor_declarado"/>
+                                <field name="unidad" on_change="on_change_unidad(unidad)"/>
+                                <field name="operador"/>
+                                <field name="contenedor"/>
+                            </group>
+                            <separator string="Direcciones" colspan="4"/>
+                            <separator string="Datos de Origen" colspan="2"/>
+                            <separator string="Datos de Destino" colspan="2"/>
+                            <group col="4" colspan="4">
+                                <field name="partner_id" on_change="on_change_remitente(partner_id)"/>
+                                <field name="destinatario" on_change="on_change_destinatario(destinatario)"/>
+                                <field name="partner_invoice_id"/>
+                                <field name="partner_shipping_id"/>
+                            </group>
+                            <field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,ventas,en_curso,entregado" statusbar_colors='{"cancelado":"red", "entregado":"green"}'/>
+                            <group colspan="4" col="6">
+                                <label colspan="4" string=" "/>
+                                <button name="button_generar_so" string="Enviar a ventas" colspan="2" states="borrador" type="object" icon="STOCK_REDO"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+        <!-- ACCION LOGISTICA VISTAS ARBOL Y FORMULARIO -->
+        <record id="fleosa_ml_action" model="ir.actions.act_window">
+            <field name="name">Logistica</field>
+            <field name="res_model">fleosa.ml.cp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- VISTA DE CALENDARIO PARA FECHA DE EMBARQUE -->
+        <record id="view_fleosa_logistica_calendar1" model="ir.ui.view">
+            <field name="name">view.fleosa.logistica.calendar1</field>
+            <field name="model">fleosa.ml.cp</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Fechas de Embarque" color="state" date_start="fecha_embarque">
+                    <field name="unidad"/>
+                    <field name="operador"/>
+                    <field name="origen"/>
+                    <field name="destino"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <!-- VISTA DE CALENDARIO PARA FECHA DE ENTREGA -->
+        <record id="view_fleosa_logistica_calendar2" model="ir.ui.view">
+            <field name="name">view.fleosa.logistica.calendar2</field>
+            <field name="model">fleosa.ml.cp</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Fechas de Entrega" color="state" date_start="fecha_entrega">
+                    <field name="unidad"/>
+                    <field name="operador"/>
+                    <field name="origen"/>
+                    <field name="destino"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <!-- ACCION LOGISTICA CALENDARIO EMBARQUE -->
+        <record id="fleosa_ml_action_calendar1" model="ir.actions.act_window">
+            <field name="name">Calendario de Embarque</field>
+            <field name="res_model">fleosa.ml.cp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_fleosa_logistica_calendar1"/>
+        </record>
+        
+        <!-- ACCION LOGISTICA CALENDARIO ENTREGA -->
+        <record id="fleosa_ml_action_calendar2" model="ir.actions.act_window">
+            <field name="name">Calendario de Entrega</field>
+            <field name="res_model">fleosa.ml.cp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_fleosa_logistica_calendar2"/>
+        </record>
+        
+        <menuitem name="Logistica" id="menu_ml" parent="menu_fleosa"/>
+        <menuitem action="fleosa_ml_action" id="menu_action_fleosa_ml" parent="menu_ml"/>
+        <menuitem action="fleosa_ml_action_calendar1" id="menu_action_fleosa_ml_calendar1" parent="menu_ml"/>
+        <menuitem action="fleosa_ml_action_calendar2" id="menu_action_fleosa_ml_calendar2" parent="menu_ml"/>
+    
+    </data>
+</openerp>
