@@ -25,6 +25,7 @@
 #
 ##############################################################################
 
+
 from osv import osv, fields
 
 class fleosa_mu_contenedores(osv.osv):
@@ -32,7 +33,7 @@ class fleosa_mu_contenedores(osv.osv):
     _columns = {
         'name': fields.char("Número Economico", size=20, required=True, help="Número que identifica el contenedor."),
         'placas': fields.char("Placas", size=10, required=True, help="Número de placas que tiene el contenedor."),
-        'tipo': fields.selection((('uno', 'UNO'),('dos','DOS')), "Tipo", help="Seleccione el tipo de contenedor.",),
+        'tipo': fields.selection((('30','30 Toneladas'),('35','35 Toneladas')), "Tamaño", help="Seleccione el tamaño del tanque."),
         'state': fields.selection([('pension','En pensión'),
             ('descompuesta','Descompuesta'),
             ('mantenimiento','En mantenimiento'),
@@ -43,6 +44,7 @@ class fleosa_mu_contenedores(osv.osv):
     
     _defaults = {
         'state': "pension",
+        'tipo': '30',
     }
 fleosa_mu_contenedores()
 
@@ -53,7 +55,7 @@ class fleosa_mu_unidades(osv.osv):
         'dueno': fields.many2one("hr.employee","Dueño", required=True, help="Dueño de la unidad."),
         'placas': fields.char("Placas", size=10, required=True, help="Número de placas que tiene la unidad."),
         'operador': fields.many2one("hr.employee", "Operador", help="Si la unidad tiene asignado un operador seleccionelo."),
-        'contenedor': fields.many2one("fleosa.mu.contenedores", "Contenedor", help="Si la unidad cuenta con un contenedor asignado seleccionelo."),
+        'contenedor': fields.many2one("fleosa.mu.contenedores", "Tanque", help="Si la unidad cuenta con un tanque asignado seleccionelo."),
         'state': fields.selection([('pension','En pensión'),
             ('descompuesta','Descompuesta'),
             ('mantenimiento','En mantenimiento'),

@@ -5,8 +5,8 @@ if [ -z $1 ]; then
         exit 1;
 fi
 usuario=`whoami`
-root="root"
-if [$usuario=$root]; then
+root='root'
+if ["$usuario"="$root"]; then
         echo "ERROR: La aplicación debe de ser ejecutada como super usuario."
         exit 1;
 fi

@@ -33,8 +33,8 @@
                         <field name="date_order"/>
                         <field name="fecha_embarque"/>
                         <field name="fecha_entrega"/>
-                        <field name="origen" readonly="1"/>
-                        <field name="destino" readonly="1"/>
+                        <field name="origen" states="ventas,en_curso,entregado" />
+                        <field name="destino" states="ventas,en_curso,entregado" />
                     </group>
                     <notebook colspan="4">
                         <page string="Datos de Envio">
