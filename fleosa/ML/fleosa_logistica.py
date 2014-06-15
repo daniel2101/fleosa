@@ -101,17 +101,19 @@ class fleosa_ml_cp(osv.osv):
         estado_origen = origen.state_id.id
         estado_destino = destino.state_id.id
         order_line = self.pool.get('sale.order.line') #Objeto sale.order.line
-        l = [0,0,0,0,0,0,0]
+        l = {}
         #Buscar y agregar FLETE
         producto = self.pool.get('product.product').search(cr, uid, [('origen_ciudad','=', ciudad_origen), ('destino_ciudad','=', ciudad_destino), ('origen_estado_id','=', estado_origen), ('destino_estado_id','=',estado_destino)], limit=1)
+        if not producto:
+            raise osv.except_osv("Advertencia", "En productos no existe un flete de %s, %s a %s, %s; primero creelo para poder continuar." % (ciudad_origen, origen.state_id.name, ciudad_destino, destino.state_id.name))
         lineas1 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas1['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
-        l[1] = order_line.create(cr,uid, lineas1['value'], context=context)
+        #l[1] = order_line.create(cr,uid, lineas1['value'], context=context)
         #Buscar y agregar SEGURO
         producto = self.pool.get('product.product').search(cr, uid, [('name','=',"SEGURO")], limit=1)
         lineas2 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas2['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
-        l[2] = order_line.create(cr,uid, lineas2['value'], context=context)
+        l[2] = self.pool.get('sale.order.line').create(cr,uid, lineas2['value'], context=context)
         #Buscar y agregar MANIOBRAS
         producto = self.pool.get('product.product').search(cr, uid, [('name','=',"MANIOBRAS")], limit=1)
         lineas3 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
@@ -140,6 +142,9 @@ class fleosa_ml_cp(osv.osv):
                 for i in li['value']['tax_id']:
                     cr.execute("INSERT INTO sale_order_tax VALUES (%s, %s)",(l[cont], i))
                 cont+=1
+            #Calcular impuestos
+            res = so.calcular_impuestos(cr, uid, [id_so])
+            so.write(cr, uid, id_so, res[id_so])
             return self.write(cr, uid, ids, {'state': 'ventas'})
         else: raise osv.except_osv(lineas1['warning']['title'], lineas1['warning']['message'])
         return False

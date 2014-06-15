@@ -4,15 +4,9 @@ if [ -z $1 ]; then
         echo "ERROR: Falta de parametro el nombre del modulo."
         exit 1;
 fi
-usuario=`whoami`
-root="root"
-if [$usuario=$root]; then
-        echo "ERROR: La aplicación debe de ser ejecutada como super usuario."
-        exit 1;
-fi
 clear
 echo "Borrando Archivos temporales..."
-rm -R $1/*~
+rm `find | grep /*~`
 echo "Borrando Modulo Anterior..."
 rm -R /opt/openerp/server/openerp/addons/$1
 echo "Copiando Modulo Nuevo..."

@@ -25,6 +25,33 @@
 #
 ##############################################################################
 
-import fleosa_compras
+from osv import osv, fields
 
+class fleosa_mp_productos(osv.osv):
 
+    _inherit = "product.product"
+    
+    def _get_default_pais_id(self, cr, uid, context=None):
+        country_obj = self.pool.get('res.country')
+        ids = country_obj.search(cr, uid, [ ( 'code', '=', 'MX' ), ], limit=1)
+        id = ids and ids[0] or False
+        return id
+        
+    def onchange_tipo(self, cursor, user, ids, value):
+        return {'value': {}}
+        
+    
+    _columns = {
+        'tipo_flete': fields.boolean("Es flete"),
+        'pais_id': fields.many2one("res.country","Pais", readonly=True),
+        'origen_ciudad': fields.char("Ciudad", size=50),
+        'origen_estado_id': fields.many2one("res.country.state","Estado", domain="[('country_id','=',pais_id)]", help="Si es un producto de tipo flete, selecciona el estado de origen."),
+        'destino_ciudad': fields.char("Ciudad", size=50),
+        'destino_estado_id': fields.many2one("res.country.state","Estado", domain="[('country_id','=',pais_id)]", help="Si es un producto de tipo flete, selecciona el estado de destino."),
+    }
+    
+    _defaults = {
+        'pais_id': _get_default_pais_id,
+    }
+    
+fleosa_mp_productos()

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="1">
-        <record id="fleosa_mo_hr_departamanto" model="hr.departament">
-        </record>
-    </data>
-</openerp>

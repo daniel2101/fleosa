@@ -22,6 +22,16 @@
                 <field name="partner_shipping_id" position="after">
                     <field name="partner_direccion_remitente" readonly="1"/>
                 </field>
+                <field name="state">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,viaje,progress,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
+                </field>
+                <button name="button_dummy" position="replace">
+                    <button name="calcular_impuestos" states="draft" string="Calcular Impuestos" type="object" icon="gtk-execute"/>
+                </button>
+                <button name="order_confirm" position="replace">
+                    <button name="confirmar_envio" states="draft" type="object" string="Confirmar Envio" icon="gtk-apply"/>
+                    <button name="order_confirm" states="viaje" string="Confirmar Pedido" icon="gtk-apply"/>
+                </button>
             </field>
         </record>
     </data>

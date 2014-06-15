@@ -32,9 +32,8 @@
 
 {
     "name" : "Fleosa",
-    "version" : "1.22.58",
-    "depends": ["base", "cfdi_rnet", "purchase", "hr"],
-    #"depends": ["base", "project", "purchase", "hr"],
+    "version" : "1.24.67",
+    "depends": ["base", "l10n_mx_states", "cfdi_rnet", "purchase", "hr"],
     "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla",
     "website": "http://rnet.mx",
     "category" : "Generic Modules/Others",
@@ -49,6 +48,7 @@ Modulo para Fleosa:
         6) MF Facturación. Posiblemente no se necesita modificar codigo.
         7) MM Mantenimiento.
         8) MP Producto.
+        9) MTP Registo de tiempos y pesos.
 """,
     "init_xml" : [],
     "update_xml" : ["fleosa_view.xml",
@@ -56,7 +56,8 @@ Modulo para Fleosa:
                     "MU/view.xml",
                     "ML/view.xml",
                     "MV/view.xml",
-                    "MP/view.xml"],
+                    "MP/view.xml",
+                    "MTP/view.xml"],
     "demo_xml" : [],
     "installable" : True,
     'auto_install': True,

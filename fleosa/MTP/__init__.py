@@ -25,18 +25,4 @@
 #
 ##############################################################################
 
-from osv import osv, fields
-
-class fleosa_mv_sale(osv.osv):
-    _name = "sale.order"
-    _inherit = "sale.order"
-    
-    _columns = {
-        'carta_porte_id': fields.many2one("fleosa.ml.cp", "Carta Porte"),
-        'partner_destinatario_id': fields.many2one("res.partner", "Destinatario", required=True),
-        'partner_direccion_remitente': fields.many2one("res.partner.address", "Dirección Remitente", required=True),
-        'partner_order_id': fields.many2one('res.partner.address', 'Ordering Contact', readonly=True, states={'draft': [('readonly', False)]}, help="The name and address of the contact who requested the order or quotation."),
-        #'state': fields.selection(),
-    }
-    
-fleosa_mv_sale()
+import fleosa_tiempos_pesos
