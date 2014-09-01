@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        
-        <record id="">
+    <data noupdate="1">
+         <record id="fleosa_config_configuracion_general" model="fleosa.config">
+            <field name="name">Configuración General</field>
         </record>
-        
     </data>
 </openerp>

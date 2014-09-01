@@ -7,7 +7,7 @@
             <field name="model">fleosa.mu.unidades</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Unidades">
+                <tree colors="green:state=='pension'; orange:state=='viaje'; gray:state=='mantenimiento'; red:state=='descompuesta'" string="Unidades">
                     <field name="name" select="1"/>
                     <field name="dueno" select="1"/>
                     <field name="placas" select="1"/>
@@ -52,7 +52,7 @@
             <field name="model">fleosa.mu.contenedores</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Contenedores">
+                <tree colors="green:state=='pension'; orange:state=='viaje'; gray:state=='mantenimiento'; red:state=='descompuesta'" string="Contenedores">
                     <field name="name" select="1"/>
                     <field name="placas" select="1"/>
                     <field name="tipo" select="1"/>

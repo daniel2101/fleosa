@@ -32,9 +32,9 @@
 
 {
     "name" : "Fleosa",
-    "version" : "1.24.67",
+    "version" : "1.28.88",
     "depends": ["base", "l10n_mx_states", "cfdi_rnet", "purchase", "hr"],
-    "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla",
+    "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla, Luis Miguel",
     "website": "http://rnet.mx",
     "category" : "Generic Modules/Others",
     "description" : """
@@ -57,7 +57,10 @@ Modulo para Fleosa:
                     "ML/view.xml",
                     "MV/view.xml",
                     "MP/view.xml",
-                    "MTP/view.xml"],
+                    "MTP/view.xml",
+                    "fleosa_config_view.xml",
+                    "data.xml",
+                    "report/report.xml"],
     "demo_xml" : [],
     "installable" : True,
     'auto_install': True,

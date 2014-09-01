@@ -27,6 +27,15 @@
 
 from osv import osv, fields
 
+
+class fleosa_ml_direcciones(osv.osv):
+    _name = "fleosa.ml.direcciones"
+    _columns = {
+        'name': fields.many2one("res.partner.address","Dirección Origen", required=True),
+        'destino': fields.many2one("res.partner.address","Dirección Destino", required=True),
+    }
+fleosa_ml_direcciones()
+
 class fleosa_ml_cp(osv.osv):
 
     _name = "fleosa.ml.cp"
@@ -79,6 +88,7 @@ class fleosa_ml_cp(osv.osv):
         company = self.pool.get('res.company').search(cr, uid, [],limit=1)
         tienda = self.pool.get('sale.shop').search(cr, uid, [],limit=1)
         lista = self.pool.get('product.pricelist').search(cr, uid, [('type', '=', 'sale')],limit=1)
+        so = self.pool.get('sale.order')
         vals = {
             'carta_porte_id': cp['id'],
             'name': cp['name'],
@@ -92,7 +102,6 @@ class fleosa_ml_cp(osv.osv):
             'shop_id': tienda[0],
             'pricelist_id': lista[0],
         }
-        so = self.pool.get('sale.order')
         id_so = so.create(cr, uid, vals, context=context)
         origen = self.pool.get('res.partner.address').browse(cr,uid,vals['partner_direccion_remitente'])
         destino = self.pool.get('res.partner.address').browse(cr,uid,vals['partner_shipping_id'])
@@ -103,40 +112,35 @@ class fleosa_ml_cp(osv.osv):
         order_line = self.pool.get('sale.order.line') #Objeto sale.order.line
         l = {}
         #Buscar y agregar FLETE
-        producto = self.pool.get('product.product').search(cr, uid, [('origen_ciudad','=', ciudad_origen), ('destino_ciudad','=', ciudad_destino), ('origen_estado_id','=', estado_origen), ('destino_estado_id','=',estado_destino)], limit=1)
+        producto = self.pool.get('product.product').search(cr, uid, [('origen_ciudad','like',ciudad_origen.upper()), ('destino_ciudad','like', ciudad_destino.upper()), ('origen_estado_id','=', estado_origen), ('destino_estado_id','=',estado_destino)], limit=1)
         if not producto:
             raise osv.except_osv("Advertencia", "En productos no existe un flete de %s, %s a %s, %s; primero creelo para poder continuar." % (ciudad_origen, origen.state_id.name, ciudad_destino, destino.state_id.name))
         lineas1 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas1['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
-        #l[1] = order_line.create(cr,uid, lineas1['value'], context=context)
-        #Buscar y agregar SEGURO
-        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"SEGURO")], limit=1)
-        lineas2 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
-        lineas2['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
-        l[2] = self.pool.get('sale.order.line').create(cr,uid, lineas2['value'], context=context)
+        l[1] = order_line.create(cr,uid, lineas1['value'], context=context)
         #Buscar y agregar MANIOBRAS
         producto = self.pool.get('product.product').search(cr, uid, [('name','=',"MANIOBRAS")], limit=1)
+        lineas2 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
+        lineas2['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
+        l[2] = order_line.create(cr,uid, lineas2['value'], context=context)
+        #Buscar y agregar REPARTO
+        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"REPARTO")], limit=1)
         lineas3 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas3['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
         l[3] = order_line.create(cr,uid, lineas3['value'], context=context)
-        #Buscar y agregar REPARTO
-        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"REPARTO")], limit=1)
+        #Buscar y agregar ESTANCIA
+        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"ESTANCIA")], limit=1)
         lineas4 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas4['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
         l[4] = order_line.create(cr,uid, lineas4['value'], context=context)
-        #Buscar y agregar AUTOPISTAS
-        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"AUTOPISTAS")], limit=1)
+        #Buscar y agregar BASCULA
+        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"BASCULAS")], limit=1)
         lineas5 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
         lineas5['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
         l[5] = order_line.create(cr,uid, lineas5['value'], context=context)
-        #Buscar y agregar OTROS
-        producto = self.pool.get('product.product').search(cr, uid, [('name','=',"OTROS")], limit=1)
-        lineas6 = order_line.product_id_change(cr, uid, id_so, vals['pricelist_id'], producto[0],partner_id=uid)
-        lineas6['value'].update({'order_id': id_so, 'product_id': producto[0], 'product_uos_qty': '1.000'})
-        l[6] = order_line.create(cr,uid, lineas6['value'], context=context)
-        if (l[1] and l[2] and l[3] and l[4] and l[5] and l[6]):
+        if (l[1] and l[2] and l[3] and l[4] and l[5]):
             #Insertar Impuestos
-            lineas = [lineas1, lineas2, lineas3, lineas4, lineas5, lineas6]
+            lineas = [lineas1, lineas2, lineas3, lineas4, lineas5]
             cont=1
             for li in lineas:
                 for i in li['value']['tax_id']:
@@ -144,13 +148,15 @@ class fleosa_ml_cp(osv.osv):
                 cont+=1
             #Calcular impuestos
             res = so.calcular_impuestos(cr, uid, [id_so])
-            so.write(cr, uid, id_so, res[id_so])
+            if not res:
+                raise osv.except_osv("ERROR", "No se pudieron calcular los impuestos")
             return self.write(cr, uid, ids, {'state': 'ventas'})
         else: raise osv.except_osv(lineas1['warning']['title'], lineas1['warning']['message'])
         return False
         
     _columns = {
         'name': fields.char("Referencia", size=50, required=True, readonly=True, states={'borrador': [('readonly', False)]}),
+        'no_remision': fields.char("No. Remisión", size=50, readonly=True, states={'borrador': [('readonly', False)]}),
         'user_id': fields.many2one("res.users", "Logistica"),
         'date_order': fields.date("Fecha de Pedido", required=True, readonly=True, select=True, states={'borrador': [('readonly', False)]}),
         'partner_id': fields.many2one("res.partner","Remitente", required=True, help="Seleccione el remitente.", readonly=True, states={'borrador': [('readonly', False)]}),
@@ -169,6 +175,7 @@ class fleosa_ml_cp(osv.osv):
         'unidad': fields.many2one("fleosa.mu.unidades", "Unidad", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'contenedor': fields.many2one("fleosa.mu.contenedores", "Contenedor", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'operador': fields.many2one("hr.employee", "Operador", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
+        'multi_direcciones': fields.many2many("fleosa.ml.direcciones", "fleosa_ml_cp_direcciones", "id_cp", "id_direccion"),
         'state': fields.selection([
             ('borrador', 'Borrador'),
             ('ventas', 'En ventas'),

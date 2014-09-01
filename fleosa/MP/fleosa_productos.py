@@ -40,7 +40,20 @@ class fleosa_mp_productos(osv.osv):
     def onchange_tipo(self, cursor, user, ids, value):
         return {'value': {}}
         
-    
+    def write(self, cr, uid, ids, vals, context=None):
+        try:
+            vals['origen_ciudad'] = vals['origen_ciudad'].upper()
+            vals['destino_ciudad'] = vals['destino_ciudad'].upper()
+        except: 
+            return super(fleosa_mp_productos, self).write(cr, uid, ids, vals, context=context)
+        return super(fleosa_mp_productos, self).write(cr, uid, ids, vals, context=context)
+        
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('origen_ciudad', False) and vals.get('destino_ciudad', False):
+            vals['origen_ciudad'] = vals['origen_ciudad'].upper()
+            vals['destino_ciudad'] = vals['destino_ciudad'].upper()
+        return super(fleosa_mp_productos, self).create(cr, uid, vals, context=context)
+        
     _columns = {
         'tipo_flete': fields.boolean("Es flete"),
         'pais_id': fields.many2one("res.country","Pais", readonly=True),
