@@ -9,23 +9,18 @@
     <% setLang(o.partner_id.lang) %>
 
 	      
-		<table  width="100%" class="title">
-                <tr>
-                    <td>
-                        <b> ${ _('Carta Porte No.') } ${o.name}</b><br/><br/>
-                    </td>
-                </tr>
-            	</table>
 		<table  width="100%" class="subtitle">
                 <tr>
                     <td>
-			<b> ${ _('Lugar y Fecha de Expedición: ') }</b>
-                    </td>
-		    <td>
-			<b> ${ _('Morelia Michoacán a ') } ${o.date_order}</b>
+                        <b> ${ _('Carta Porte No.') } ${o.name}</b>
                     </td>
                 </tr>
-            	</table>		
+                <tr>
+                    <td>
+            			<b> ${ _('Lugar y Fecha de Expedición: ') }${ _('Morelia Michoacán a ') } ${o.date_order}</b>
+                    </td>
+                </tr>
+            	</table><br/>		
 		<table class="basic_table" width="100%">
 			<tr>
 				<td width="10%" align="left">
@@ -265,40 +260,8 @@
 				 </td>
 			</tr>	
     	</table>
-	</br></br></br>
-	
-	<table  width="60%" class="subtitle" align="center">
-                <tr>
-                    <td style="font-size:10">
-			<b> ${ _('Recibí de Conformidad:') }</b>
-                    </td>
-		
-                    <td width="70%" style="border-bottom: 1px solid #000000; text-align:left">
-			
-                    </td>
-		</tr>
-		<tr>
-                    <td>
-                    </td>
-		
-                    <td style="font-size:8;text-align:center">
-			Firma del Destinatario
-                    </td>
-		</tr>
-        </table>
-	</br>
 
-	<p style="page-break-after:always"></p>
-	
 	</br>
-	<table  width="100%" class="subtitle">
-                <tr>
-                    <td>
-			<b> ${ _('Datos de Entrega: ') }</b>
-                    </td>
-		</tr>
-        </table>	
-
 	<table class="list_table" width="100%">
 		<tr>
 			<td width="20%">
@@ -335,7 +298,7 @@
 			Observaciones:
 			</td>
 			<td width="30%">
-			</br></br></br>
+			
 			</td>
 			<td width="20%">
 			Documento:
@@ -344,9 +307,27 @@
 			</td>
 		</tr>
 	
-	</table></br></br></br>
+	</table>	
+	</br></br></br>
 
+    <table  width="60%" class="subtitle" align="center">
+        <tr>
+            <td style="font-size:10">
+                <b> ${ _('Recibí de Conformidad:') }</b>
+            </td>
+            <td width="70%" style="border-bottom: 1px solid #000000; text-align:left">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="font-size:8;text-align:center">
+                Firma del Destinatario
+            </td>
+        </tr>
+    </table>
 	</br>
+
+	<p style="page-break-after:always"></p>
 	
 		%if o.carta_porte_id.multi_direcciones:
 			<table class="subtitle" width="100%">

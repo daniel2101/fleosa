@@ -7,22 +7,22 @@
 	<body>
 		<table  width="100%" class="resumen">
 			<tr>
-				<td width="5%">Viaje</td>
+				<td width="5%">No. de Viaje</td>
 				<td width="5%">Placas</td>
 				<td width="10%">Operador</td>
 				<td width="5%">Fecha</td>
 				<td width="10%">Cliente</td>
-				<td width="10%">Ciudad</td>
+				<td width="10%">Ciudad Destino</td>
 				<td width="10%">Producto</td>
-				<td width="5%">Remisión</td>
+				<td width="5%">Remisión AAK</td>
 				<td width="5%">C.P.</td>
 				<td width="5%">Precio</td>
 				<td width="5%">Maniobras</td>
 				<td width="5%">Reparto</td>
-				<td width="5%">Bascula</td>
+				<td width="5%">Báscula</td>
 				<td width="5%">Estancia</td>
-				<td width="5%">Cargada</td>
-				<td width="5%">Recibida</td>
+				<td width="5%">Cantidad Cargada</td>
+				<td width="5%">Cantidad Recibida</td>
 			</tr>
 			<%
 			    x = 1

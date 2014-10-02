@@ -174,7 +174,7 @@ class fleosa_ml_cp(osv.osv):
         'remision': fields.char("Remision", size=100, readonly=True, states={'borrador': [('readonly', False)]}),
         'unidad': fields.many2one("fleosa.mu.unidades", "Unidad", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'contenedor': fields.many2one("fleosa.mu.contenedores", "Contenedor", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
-        'operador': fields.many2one("hr.employee", "Operador", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
+        'operador': fields.many2one("hr.employee", "Operador", required=True, readonly=True, states={'borrador': [('readonly', False)], 'ventas': [('readonly', False)]}),
         'multi_direcciones': fields.many2many("fleosa.ml.direcciones", "fleosa_ml_cp_direcciones", "id_cp", "id_direccion"),
         'state': fields.selection([
             ('borrador', 'Borrador'),

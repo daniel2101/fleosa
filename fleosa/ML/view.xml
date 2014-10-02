@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+##############################################################################
+#
+#    Desarrollado por rNet Soluciones
+#    Jefe de Proyecto: Ing. Ulises Tlatoani Vidal Rieder
+#    Desarrollador: Ing. Salvador Daniel Pelayo Gómez.
+#    Analista: Lic. David Padilla Bobadilla
+#
+##############################################################################
+-->
+
 <openerp>
     <data>
         

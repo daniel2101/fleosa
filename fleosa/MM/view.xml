@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+##############################################################################
+#
+#    Desarrollado por rNet Soluciones
+#    Jefe de Proyecto: Ing. Ulises Tlatoani Vidal Rieder
+#    Desarrollador: Ing. Salvador Daniel Pelayo Gómez.
+#    Analista: Lic. David Padilla Bobadilla
+#
+##############################################################################
+-->
+
+<openerp>
+    <data>
+        
+        <!-- VISTA DE ARBOL PARA MATERIAL -->
+        <record id="view_fleosa_mantenimiento_material_tree" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.material.tree</field>
+            <field name="model">fleosa.mantenimiento.material</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="cantidad" on_change="on_change_cantidad(cantidad, precio_unidad)"/>
+                    <field name="name" on_change="on_change_producto(name, cantidad)"/>
+                    <field name="descripcion"/>
+                    <field name="unidad"/>
+                    <field name="precio_unidad" on_change="on_change_cantidad(cantidad, precio_unidad)"/>
+                    <field name="subtotal"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- VISTA DE ARBOL PARA ACTIVIDADES -->
+        <record id="view_fleosa_mantenimiento_actividades_tree" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.actividades.tree</field>
+            <field name="model">fleosa.mantenimiento.actividades</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                    <field name="descripcion"/>
+                    <field name="empleado"/>
+                    <field name="duracion"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- VISTA DE ARBOL PARA REPARACIONES -->
+        <record id="view_fleosa_mantenimiento_reparacion_tree" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.reparacion.tree</field>
+            <field name="model">fleosa.mantenimiento.reparacion</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Ordenes de Reparación" colors="blue:state=='aprobada'; green:state=='terminada'; red:state=='cancelada'">
+                    <field name="name"/>
+                    <field name="fecha_solicitud"/>
+                    <field name="fecha_fin"/>
+                    <field name="unidad"/>
+                    <field name="contenedor"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_fleosa_mantenimiento_reparacion_form" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.form</field>
+            <field name="model">fleosa.mantenimiento.reparacion</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Orden de Reparación">
+                    <group col="6" colspan="4">
+                        <group col="4" colspan="4">
+                            <field name="name"/>
+                            <field name="tipo"/>
+                            <field name="unidad"/>
+                            <field name="contenedor"/>
+                            <field name="solicitud_uid"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <field name="fecha_solicitud"/>
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_fin"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Material">
+                            <field name="material" nolabel="1" widget="one2many_list" colspan="4"/>
+                            <field name="total_material"/>
+                            <newline/>
+                            <separator string="Notas" colspan="4"/>
+                            <field name="notas_material" nolabel="1" colspan="4"/>
+                            <field name="state" widget="statusbar"/>
+                        </page>
+                        <page string="Actividades">
+                            <field name="actividades" nolabel="1" widget="one2many_list" colspan="4"/>
+                            <field name="total_horas"/>
+                            <newline/>
+                            <separator string="Notas" colspan="4"/>
+                            <field name="notas_actividades" nolabel="1" colspan="4"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="fleosa_mantenimiento_action_reparaciones" model="ir.actions.act_window">
+             <field name="name">Ordenes de Reparación</field>
+             <field name="res_model">fleosa.mantenimiento.reparacion</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+    
+        <menuitem name="Mantenimiento" id="menu_mantenimiento" parent="menu_fleosa"/>
+        <menuitem action="fleosa_mantenimiento_action_reparaciones" id="menu_action_fleosa_mantenimiento_reparaciones" parent="menu_mantenimiento"/>
+        
+    </data>
+</openerp>
