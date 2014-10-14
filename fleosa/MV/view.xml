@@ -10,8 +10,7 @@
                 <field name="client_order_ref" position="after">
                     <group colspan="4" col="6">
                         <field name="carta_porte_id"/>
-                        <field name="pesos_id"/>
-                        <field name="tiempos_id"/>
+                        <field name="pesos_tiempos_id"/>
                     </group>
                 </field>
                 <field name="partner_id" position="replace">
@@ -34,6 +33,11 @@
                 </button>
                 <button name="%(sale.report_sale_order)d" position="replace">
                     <button name="%(sale.report_sale_order)d" string="Print Quotation" type="action" icon="gtk-print" states="viaje"/>
+                </button>
+                <button name="action_cancel_draft" position="replace"/>
+                <button name="action_cancel" position="replace"/>
+                <button name="cancel" position="replace">
+                    <button name="cancelar_orden" string="Cancelar Orden" states="draft" icon="gtk-cancel" type="object"/>
                 </button>
                 <button name="%(sale.action_view_sale_advance_payment_inv)d" position="replace"/>
                 <button name="order_confirm" position="replace">

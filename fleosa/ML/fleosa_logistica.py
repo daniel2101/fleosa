@@ -156,7 +156,6 @@ class fleosa_ml_cp(osv.osv):
         
     _columns = {
         'name': fields.char("Referencia", size=50, required=True, readonly=True, states={'borrador': [('readonly', False)]}),
-        'no_remision': fields.char("No. Remisión", size=50, readonly=True, states={'borrador': [('readonly', False)]}),
         'user_id': fields.many2one("res.users", "Logistica"),
         'date_order': fields.date("Fecha de Pedido", required=True, readonly=True, select=True, states={'borrador': [('readonly', False)]}),
         'partner_id': fields.many2one("res.partner","Remitente", required=True, help="Seleccione el remitente.", readonly=True, states={'borrador': [('readonly', False)]}),
@@ -170,8 +169,8 @@ class fleosa_ml_cp(osv.osv):
         'producto_transportar': fields.many2one("product.product", "Producto a Transportar", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'cantidad': fields.float("Cantidad programada", digits=(6,2), readonly=True, states={'borrador': [('readonly', False)]}),
         'valor_declarado': fields.float("Valor Declarado", digits=(8,2), readonly=True, states={'borrador': [('readonly', False)]}),
-        'sellos': fields.char("Sellos", size=100, readonly=True, states={'borrador': [('readonly', False)]}),
-        'remision': fields.char("Remision", size=100, readonly=True, states={'borrador': [('readonly', False)]}),
+        'remision': fields.char("No. Remision", size=100),
+        'sellos': fields.char("Sellos", size=100),
         'unidad': fields.many2one("fleosa.mu.unidades", "Unidad", required=True, readonly=True, states={'borrador': [('readonly', False)], 'ventas': [('readonly', False)]}),
         'contenedor': fields.many2one("fleosa.mu.contenedores", "Contenedor", required=True, readonly=True, states={'borrador': [('readonly', False)], 'ventas': [('readonly', False)]}),
         'operador': fields.many2one("hr.employee", "Operador", required=True, readonly=True, states={'borrador': [('readonly', False)], 'ventas': [('readonly', False)]}),

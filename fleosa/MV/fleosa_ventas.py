@@ -36,6 +36,12 @@ class fleosa_mv_sale(osv.osv):
     _name = "sale.order"
     _inherit = "sale.order"
     
+    def cancelar_orden(self, cr, uid, ids, context=None):
+        cp = self.pool.get('fleosa.ml.cp')
+        so = self.browse(cr, uid, ids, context=context)[0]
+        cp.write(cr, uid, [so.carta_porte_id.id], {'state': 'cancelado'})
+        return self.write(cr, uid, ids, {'state': 'cancel'})
+    
     def confirmar_envio(self, cr, uid, ids, context=None):
         vals = {'state': 'viaje'}
         so = self.browse(cr, uid, ids, context=context)[0]
@@ -64,8 +70,8 @@ class fleosa_mv_sale(osv.osv):
         l_id = order_line.create(cr,uid, linea['value'], context=context)
         for i in linea['value']['taxes_id']:
             cr.execute("INSERT INTO purchase_order_taxe VALUES (%s, %s)",(l_id, i))
-        #CREAR REGISTRO DE PESOS
-        pesos_obj = self.pool.get("fleosa.mtp.pesos")
+        #CREAR REGISTRO DE PESOS Y TIEMPOS
+        pesos_obj = self.pool.get("fleosa.mtp")
         vals_pesos = {
             'name': so.carta_porte_id.id,
             'unidad': so.carta_porte_id.unidad.id,
@@ -75,15 +81,7 @@ class fleosa_mv_sale(osv.osv):
             'state': 'pendiente',
         }
         pesos_id = pesos_obj.create(cr, uid, vals_pesos)
-        #CREAR REGISTRO DE TIEMPOS
-        tiempos_obj = self.pool.get("fleosa.mtp.tiempos")
-        vals_tiempos = {
-            'name': so.carta_porte_id.id,
-            'state': 'pension',
-        }
-        tiempos_id = tiempos_obj.create(cr, uid, vals_tiempos)
-        vals['pesos_id'] = pesos_id
-        vals['tiempos_id'] = tiempos_id
+        vals['pesos_tiempos_id'] = pesos_id
         return self.write(cr, uid, ids, vals)
         
     def calcular_impuestos(self, cr, uid, ids, context=None):
@@ -107,8 +105,7 @@ class fleosa_mv_sale(osv.osv):
     
     _columns = {
         'carta_porte_id': fields.many2one("fleosa.ml.cp", "Carta Porte", readonly=True),
-        'pesos_id': fields.many2one("fleosa.mtp.pesos", "Registro de Pesos", readonly=True),
-        'tiempos_id': fields.many2one("fleosa.mtp.tiempos", "Registro de Tiempos", readonly=True),
+        'pesos_tiempos_id': fields.many2one("fleosa.mtp", "Registro de Pesos y Tiempos", readonly=True),
         'partner_destinatario_id': fields.many2one("res.partner", "Destinatario", required=True, states={'draft': [('readonly', False)]}),
         'partner_direccion_remitente': fields.many2one("res.partner.address", "Dirección Remitente", required=True, states={'draft': [('readonly', False)]}),
         'partner_order_id': fields.many2one('res.partner.address', 'Ordering Contact', readonly=True, states={'draft': [('readonly', False)]}, help="The name and address of the contact who requested the order or quotation."),

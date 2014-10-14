@@ -82,6 +82,7 @@ class fleosa_mantenimiento_reparacion(osv.osv):
 
     _name = 'fleosa.mantenimiento.reparacion'
     
+    
     def unlink(self, cr, uid, ids, context=None):
         raise osv.except_osv(('Acción Invalida !'), ('No es posible elimiar los registros, cancele la orden en el botón cancelar.'))
         return False
@@ -93,6 +94,8 @@ class fleosa_mantenimiento_reparacion(osv.osv):
             'state': 'borrador',
             'name': self.pool.get('ir.sequence').get(cr, uid, 'fleosa.mantenimiento.reparacion'),
             'fecha_solicitud': datetime.today().strftime('%Y-%m-%d %H:%M:%S'),
+            'fecha_inicio': None,
+            'fecha_fin': None,
         })
         return super(fleosa_mantenimiento_reparacion, self).copy(cr, uid, id, default, context=context)
     
@@ -112,7 +115,26 @@ class fleosa_mantenimiento_reparacion(osv.osv):
             total = total + actividad.duracion
         return {record_id: total}
         
+    def button_iniciar(self, cr, uid, ids, context=None):
+        orden_reparacion = self.browse(cr, uid, ids, context=context)[0]
+        unidad = orden_reparacion.unidad
+        contenedor = orden_reparacion.contenedor
+        if not contenedor and not unidad:
+            raise osv.except_osv("¡ERROR!", "Se debe seleccionar una unidad o un contenedor, al cual se le da mantenimiento.")
+        if unidad.id:
+            self.pool.get('fleosa.mu.unidades').write(cr, uid, [unidad.id], {'state': 'mantenimiento'})
+        if contenedor.id:
+            self.pool.get('fleosa.mu.contenedores').write(cr, uid, [contenedor.id], {'state': 'mantenimiento'})
+        return self.write(cr, uid, ids, {'state': 'pendiente', 'fecha_inicio': datetime.today().strftime('%Y-%m-%d %H:%M:%S')})
+
     def button_terminar(self, cr, uid, ids, context=None):
+        orden_reparacion = self.browse(cr, uid, ids, context=context)[0]
+        unidad = orden_reparacion.unidad
+        contenedor = orden_reparacion.contenedor
+        if unidad.id:
+            self.pool.get('fleosa.mu.unidades').write(cr, uid, [unidad.id], {'state': 'pension'})
+        if contenedor.id:
+            self.pool.get('fleosa.mu.contenedores').write(cr, uid, [contenedor.id], {'state': 'pension'})
         return self.write(cr, uid, ids, {'state': 'terminada', 'fecha_fin': datetime.today().strftime('%Y-%m-%d %H:%M:%S')})
 
     def button_cancelar(self, cr, uid, ids, context=None):
@@ -125,24 +147,25 @@ class fleosa_mantenimiento_reparacion(osv.osv):
             ('PREVENTIVO', 'PREVENTIVO'),
         ), "Tipo de Mantenimiento", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'fecha_solicitud': fields.datetime("Fecha de Solicitud", required=True, readonly=True),
-        'fecha_inicio': fields.datetime("Fecha de Inicio", readonly=True, states={'borrador': [('readonly', False)]}),
+        'fecha_inicio': fields.datetime("Fecha de Inicio", readonly=True),
         'fecha_fin': fields.datetime("Fecha de Fin", readonly=True),
         'unidad': fields.many2one("fleosa.mu.unidades", "Unidad", help="Unidad a la que se le realiza la reparación", readonly=True, states={'borrador': [('readonly', False)]}),
         'contenedor': fields.many2one("fleosa.mu.contenedores", "Contenedor", help="Tanque al que se le realiza la reparación", readonly=True, states={'borrador': [('readonly', False)]}),
         'solicitud_uid': fields.many2one("hr.employee", "Solicitado por", required=True, readonly=True, states={'borrador': [('readonly', False)]}),
         'state': fields.selection((
-            ('borrador','Pendiente'),
+            ('borrador','Borrador'),
+            ('pendiente', 'Pendiente'),
             ('terminada', 'Terminada'),
             ('cancelada', 'Cancelada'),
         ), "Estado"),
         # Material Utilizado en la reparación
-        'material': fields.many2many("fleosa.mantenimiento.material", "fleosa_mantenimiento_reparacion_material", "reparacion_id", "material_id", "Material", readonly=True, states={'borrador': [('readonly', False)]}),
+        'material': fields.many2many("fleosa.mantenimiento.material", "fleosa_mantenimiento_reparacion_material", "reparacion_id", "material_id", "Material", states={'terminada': [('readonly', True)], 'cancelada': [('readonly', True)]}),
         'total_material': fields.function(_calcular_total, type="float", string="Total", store=True, readonly=True),
-        'notas_material': fields.text("Notas"),
+        'notas_material': fields.text("Notas", states={'terminada': [('readonly', True)], 'cancelada': [('readonly', True)]}),
         # Actividades de Mano de Obra
-        'actividades': fields.many2many("fleosa.mantenimiento.actividades", "fleosa_mantenimiento_reparacion_actividades", "reparacion_id", "actividades_id", "Actividades", readonly=True, states={'borrador': [('readonly', False)]}),
+        'actividades': fields.many2many("fleosa.mantenimiento.actividades", "fleosa_mantenimiento_reparacion_actividades", "reparacion_id", "actividades_id", "Actividades", states={'terminada': [('readonly', True)], 'cancelada': [('readonly', True)]}),
         'total_horas': fields.function(_calcular_total_horas, type="float", string="Total de Horas", store=True, readonly=True),
-        'notas_actividades': fields.text("Notas"),
+        'notas_actividades': fields.text("Notas", states={'terminada': [('readonly', True)], 'cancelada': [('readonly', True)]}),
     }
     
     _order = 'name desc'
@@ -156,10 +179,28 @@ class fleosa_mantenimiento_reparacion(osv.osv):
         
 fleosa_mantenimiento_reparacion()
 
+class fleosa_mantenimiento_viaje(osv.osv):
+    
+    _name="fleosa.mantenimiento.viaje"
+    
+    _columns={
+        'name': fields.many2one("res.partner","Cliente", required=True, help="Seleccione el cliente."),
+        'producto': fields.many2one("product.product", "Producto", required=True),
+        'origen': fields.char("Origen", size=200, required=True),
+        'destino': fields.char("Destino", size=200, required=True)
+    }
+
+fleosa_mantenimiento_viaje()
 
 class fleosa_mantenimiento_diesel(osv.osv):
     
     _name = "fleosa.mantenimiento.diesel"
+    
+    def on_change_unidad(self, cr, uid, ids, part):
+        if not part:
+            return {'value': {'operador': False, 'contenedor': False}}
+        unidad = self.pool.get('fleosa.mu.unidades').browse(cr, uid, part)
+        return {'value': {'operador': unidad.operador.id, 'contenedor': unidad.contenedor.id}}
     
     def unlink(self, cr, uid, ids, context=None):
         registros = self.read(cr, uid, ids, ['state'], context=context)
@@ -205,6 +246,7 @@ class fleosa_mantenimiento_diesel(osv.osv):
         'operador': fields.many2one("hr.employee", "Operador", required=True, states={'terminado': [('readonly', True)]}),
         'fecha': fields.date("Fecha", required=True, states={'terminado': [('readonly', True)]}),
         'peso': fields.float("Peso", digits=(4,1), states={'terminado': [('readonly', True)]}),
+        'viajes': fields.many2many("fleosa.mantenimiento.viaje", "fleosa_mantenimiento_diesel_viaje", "diesel_id", "viaje_id", "Viajes", states={'terminado': [('readonly', True)]}),
         'km_cpu': fields.float("Kilometros CPU", digits=(6,1), states={'terminado': [('readonly', True)]}),
         'litros_cpu': fields.float("Litros CPU", digits=(6,1), states={'terminado': [('readonly', True)]}),
         'km_real': fields.float("Kilometros Real", digits=(6,1), states={'terminado': [('readonly', True)]}),

@@ -46,18 +46,38 @@
             </field>
         </record>
         
+        <!-- VISTA DE ARBOL PARA VIAJES -->
+        <record id="view_fleosa_mantenimiento_viaje_tree" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.viaje.tree</field>
+            <field name="model">fleosa.mantenimiento.viaje</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                    <field name="producto"/>
+                    <field name="origen"/>
+                    <field name="destino"/>
+                </tree>
+            </field>
+        </record>
+        
         <!-- VISTA DE ARBOL PARA REPARACIONES -->
         <record id="view_fleosa_mantenimiento_reparacion_tree" model="ir.ui.view">
             <field name="name">view.fleosa.mantenimiento.reparacion.tree</field>
             <field name="model">fleosa.mantenimiento.reparacion</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Ordenes de Reparación" colors="blue:state=='borrador'; green:state=='terminada'; red:state=='cancelada'">
+                <tree string="Ordenes de Reparación" colors="blue:state=='pendiente'; green:state=='terminada'; red:state=='cancelada'">
                     <field name="name"/>
-                    <field name="fecha_solicitud"/>
-                    <field name="fecha_fin"/>
+                    <field name="solicitud_uid"/>
                     <field name="unidad"/>
                     <field name="contenedor"/>
+                    <field name="fecha_solicitud"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <field name="tipo" invisible="1"/>
+                    <field name="total_material"/>
+                    <field name="total_horas"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -87,17 +107,20 @@
                     <notebook colspan="4">
                         <page string="Material">
                             <field name="material" nolabel="1" widget="one2many_list" colspan="4"/>
-                            <field name="total_material"/>
+                            <field name="total_material" colspan="4"/>
                             <newline/>
                             <separator string="Notas" colspan="4"/>
                             <field name="notas_material" nolabel="1" colspan="4"/>
-                            <field name="state" widget="statusbar"/>
-                            <button name="button_terminar" string="Terminar" colspan="1" states="borrador" type="object" icon="STOCK_APPLY"/>
-                            <button name="button_cancelar" string="Cancelar" colspan="1" states="borrador" type="object" icon="STOCK_CANCEL"/>
+                            <group colspan="4" col="6">
+                                <field name="state" widget="statusbar" statusbar_visible="borrador,pendiente,terminada" statusbar_colors='{"cancelada":"red", "terminada":"green"}'/>
+                                <button name="button_iniciar" string="Iniciar" colspan="1" states="borrador" type="object" icon="STOCK_GO_FORWARD"/>
+                                <button name="button_terminar" string="Terminar" colspan="1" states="pendiente" type="object" icon="STOCK_APPLY"/>
+                                <button name="button_cancelar" string="Cancelar" colspan="1" states="borrador" type="object" icon="STOCK_CANCEL"/>
+                            </group>
                         </page>
                         <page string="Actividades">
                             <field name="actividades" nolabel="1" widget="one2many_list" colspan="4"/>
-                            <field name="total_horas"/>
+                            <field name="total_horas" colspan="4"/>
                             <newline/>
                             <separator string="Notas" colspan="4"/>
                             <field name="notas_actividades" nolabel="1" colspan="4"/>
@@ -136,7 +159,7 @@
                 <form string="Registro de Diesel">
                     <group colspan="4" col="6">
                         <group colspan="4" col="4">
-                            <field name="name" colspan="4"/>
+                            <field name="name" colspan="4" on_change="on_change_unidad(name)"/>
                             <field name="contenedor"/>
                             <field name="peso"/>
                             <field name="operador" colspan="4"/>
@@ -163,6 +186,8 @@
                                     <field name="km_litro_cpu"/>
                                 </group>
                             </group>
+                            <separator string="Viajes Realizados" colspan="4"/>
+                            <field name="viajes" nolabel="1" widget="one2many_list" colspan="4"/>
                             <separator string="Observaciones" colspan="4"/>
                             <field name="observaciones" colspan="4" nolabel="1"/>
                             <field name="state" widget="statusbar"/>
@@ -170,6 +195,42 @@
                         </page>
                     </notebook>
                 </form>
+            </field>
+        </record>
+        
+        <!-- VISTA DE BUSQUEDA REGISTRO DE REPARACIONES -->
+        <record id="view_fleosa_mantenimiento_reparacion_filter" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.reparacion.filter</field>
+            <field name="model">fleosa.mantenimiento.reparacion</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Registro de Diesel">
+                    <filter icon="STOCK_MEDIA_PAUSE" string="Pendiente" domain="['|',('state','=','borrador'), ('state','=','pendiente')]"/>
+                    <filter icon="STOCK_YES" string="Terminada" domain="[('state','=','terminada')]"/>
+                    <filter icon="STOCK_NO" string="Cancelada" domain="[('state','=','cancelada')]"/>
+                    <field name="name"/>
+                    <field name="solicitud_uid"/>
+                    <newline/>
+                    <field name="unidad"/>
+                    <field name="contenedor"/>
+                    <field name="fecha_solicitud"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <newline/>
+                    <group expand="0" string="Agrupar...">
+                        <filter string="Solicitante" icon="terp-personal" domain="[]" context="{'group_by':'solicitud_uid'}"/>
+                        <filter string="Unidad" icon="STOCK_INFO" domain="[]" context="{'group_by':'unidad'}"/>
+                        <filter string="Contenedor" icon="STOCK_INFO" domain="[]" context="{'group_by':'contenedor'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Estado" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Tipo Mantenimiento" icon="terp-mrp" domain="[]" context="{'group_by':'tipo'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Fecha Solicitud" icon="terp-go-month" domain="[]" context="{'group_by':'fecha_solicitud'}"/>
+                        <filter string="Fecha Inicio" icon="terp-go-month" domain="[]" context="{'group_by':'fecha_inicio'}"/>
+                        <filter string="Fecha Fin" icon="terp-go-month" domain="[]" context="{'group_by':'fecha_fin'}"/>
+                    </group>
+               </search>
             </field>
         </record>
         
@@ -187,8 +248,8 @@
                     <field name="operador"/>
                     <field name="fecha"/>
                     <newline/>
-                    <field string="Rendimiento menor que:" name="rendimiento" filter_domain="[('rendimiento','&lt;',self)]"/>
-                    <field string="Rendimiento mayor que:" name="rendimiento" filter_domain="[('rendimiento','&gt;',self)]"/>
+                    <field string="Rendimiento menor que:" name="rendimiento" filter_domain="[('rendimiento','&lt;=',self)]"/>
+                    <field string="Rendimiento mayor que:" name="rendimiento" filter_domain="[('rendimiento','&gt;=',self)]"/>
                     <newline/>
                     <group expand="0" string="Agrupar...">
                         <filter string="Operador" icon="terp-personal" domain="[]" context="{'group_by':'operador'}"/>
@@ -200,6 +261,20 @@
                         <filter string="Fecha" icon="terp-go-month" domain="[]" context="{'group_by':'fecha'}"/>
                     </group>
                </search>
+            </field>
+        </record>
+        
+        <!-- VISTA DE CALENDARIO PARA REGISTRO DE DIESEL -->
+        <record id="view_fleosa_mantenimiento_diesel_calendar" model="ir.ui.view">
+            <field name="name">view.fleosa.mantenimiento.diesel.calendar</field>
+            <field name="model">fleosa.mantenimiento.diesel</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Registro de Diesel" color="state" date_start="fecha">
+                    <field name="name"/>
+                    <field name="contenedor"/>
+                    <field name="operador"/>
+                </calendar>
             </field>
         </record>
         

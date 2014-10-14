@@ -37,7 +37,13 @@
 				<td>${o.partner_destinatario_id.name}</td>
 				<td>${o.carta_porte_id.destino}</td>
 				<td>${o.carta_porte_id.producto_transportar.name}</td>
-				<td>${o.carta_porte_id.no_remision}</td>
+				% if o.carta_porte_id.remision:
+                    <td>${o.carta_porte_id.remision}</td>
+                % elif o.client_order_ref:
+                    <td>${o.client_order_ref}</td>
+                % else:
+                    <td>-</td>
+                % endif
 				<td>${o.name}</td>
 				%for line in o.order_line:
 					<td>${line.price_subtotal}</td>

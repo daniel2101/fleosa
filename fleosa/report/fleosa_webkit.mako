@@ -69,13 +69,13 @@
 					Dirección:
 				</td>
 				<td width="40%">
-					<b>${format(o.partner_direccion_remitente.street)}</b>
+					<b>${format(o.partner_direccion_remitente.street)} No. ${format(o.partner_direccion_remitente.street3)}. Col. ${format(o.partner_direccion_remitente.street2)}</b>
 				</td>
 				<td width="10%" align="left">
 					Dirección:
 				</td>
 				<td width="40%">
-					<b>${format(o.partner_shipping_id.street)}</b>
+					<b>${format(o.partner_shipping_id.street)} No. ${format(o.partner_shipping_id.street3)}. Col. ${format(o.partner_shipping_id.street2)}</b>
 				</td>
 			</tr>
 			<tr>
@@ -147,8 +147,18 @@
 				</td>
 				<td width="40%" align="left">
 					<p>Tons. Neto de: <b>${format(o.carta_porte_id.producto_transportar.name)}</b></p>
-					<p>Sellos:</p>
-					<p>Remisión:</p>
+					% if o.carta_porte_id.sellos:
+                        <p>Sellos: <b>${o.carta_porte_id.sellos}</b></p>
+                    % else:
+                        <p>Sellos:</p>
+                    % endif
+                    % if o.carta_porte_id.remision:
+                        <p>Remisión: <b>${o.carta_porte_id.remision}</b></p>
+                    % elif o.client_order_ref:
+                        <p>Remisión: <b>${o.client_order_ref}</b></p>
+                    % else:
+                        </br>
+                    % endif
 					<p>ANEXO CERTIFICADO DE CALIDAD</p>
 				</td>
 				<td width="15%">
@@ -330,6 +340,7 @@
 	<p style="page-break-after:always"></p>
 	
 		%if o.carta_porte_id.multi_direcciones:
+            </br>
 			<table class="subtitle" width="100%">
 				<tr>
 					<td width="50%"><b>LUGARES DE ENTREGA ADICIONALES</b></td>
@@ -342,13 +353,17 @@
 				<tr>
 					<td width="50%"><div style="color:#000000">
   						<h3>${ d.name.city },${ d.name.state_id.name }</h3>
-  						<p>Calle: ${ d.name.street } No. ${ d.name.street3 }</p>
-						<p>Colonia: ${ d.name.street2 } C.P. ${ d.name.zip }</p>
+  						<p>Calle: ${ d.name.street }</p>
+                        <p>No. ${ d.name.street3 }</p>
+						<p>Colonia: ${ d.name.street2 }</p>
+                        <p>Código Postal: ${ d.name.zip }</p>
 					</div></td>
-					<td><div style="color:#0000FF">
+					<td><div style="color:#000000">
   						<h3>${ d.destino.city },${ d.destino.state_id.name }</h3>
-  						<p>Calle: ${ d.destino.street } No. ${ d.destino.street3 }</p>
-						<p>Colonia: ${ d.destino.street2 } C.P. ${ d.destino.zip }</p>
+  						<p>Calle: ${ d.destino.street }</p>
+                        <p>No. ${ d.destino.street3 }</p>
+						<p>Colonia: ${ d.destino.street2 }</p>
+                        <p>Código Postal: ${ d.destino.zip }</p>
 					</div></td>
 				</tr>
 			%endfor

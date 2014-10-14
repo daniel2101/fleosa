@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <record id="fleosa_dueno" model="res.groups">
+        <field name="name">FLEOSA / Dueños</field>
+    </record>
+    <record id="fleosa_logistica_encargado" model="res.groups">
+        <field name="name">FLEOSA / Logistica</field>
+    </record>
+    <record id="fleosa_mantenimiento_encargado" model="res.groups">
+        <field name="name">FLEOSA / Mantenimiento</field>
+    </record>
+    <record id="fleosa_ventas_encargado" model="res.groups">
+        <field name="name">FLEOSA / Ventas</field>
+    </record>
+  </data>
+</openerp>
+

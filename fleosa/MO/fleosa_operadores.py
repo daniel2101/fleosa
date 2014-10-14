@@ -27,4 +27,13 @@
 
 from osv import osv, fields
 
-#class fleosa_operadores(osv.osv)
+class fleosa_operadores(osv.osv):
+    
+    _name = "hr.employee"
+    _inherit = "hr.employee"
+    
+    _columns = {
+        'caducidad_licencia': fields.date("Caducidad de Licencia"),
+    }
+    
+fleosa_operadores()

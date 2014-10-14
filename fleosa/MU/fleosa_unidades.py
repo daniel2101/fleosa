@@ -33,7 +33,7 @@ class fleosa_mu_contenedores(osv.osv):
     _columns = {
         'name': fields.char("Número Economico", size=20, required=True, help="Número que identifica el contenedor."),
         'placas': fields.char("Placas", size=10, required=True, help="Número de placas que tiene el contenedor."),
-        'tipo': fields.selection((('30','30 Toneladas'),('35','35 Toneladas')), "Tamaño", help="Seleccione el tamaño del tanque."),
+        'tipo': fields.selection((('20', '20 Toneladas'),('30','30 Toneladas'),('35','35 Toneladas')), "Tamaño", help="Seleccione el tamaño del tanque."),
         'state': fields.selection([('pension','En pensión'),
             ('descompuesta','Descompuesta'),
             ('mantenimiento','En mantenimiento'),

@@ -28,11 +28,11 @@
 # Manejo de versiones:
 # Primer digito es la versión del release (entrega a fleosa).
 # El segundo digito es la versión de actualización (funcional a nivel de instalación)
-# El tercer digito es el número de modidificación de algún scrip, consecutivo para todo el desarrollo
+# El tercer digito es el número de modidificación de algún script, consecutivo para todo el desarrollo
 
 {
     "name" : "Fleosa",
-    "version" : "1.32.99",
+    "version" : "1.34.108",
     "depends": ["base", "l10n_mx_states", "cfdi_rnet", "purchase", "hr"],
     "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla, Luis Miguel",
     "website": "http://rnet.mx",
@@ -60,7 +60,9 @@ Modulo para Fleosa:
                     "MTP/view.xml",
                     "MM/sequence.xml",
                     "MM/view.xml",
-                    "report/report.xml"],
+                    "report/report.xml",
+                    "security/fleosa_security.xml",
+                    "security/ir.model.access.csv"],
     "demo_xml" : [],
     "installable" : True,
     'auto_install': True,

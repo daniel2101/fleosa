@@ -15,10 +15,10 @@
             </field>
         </record>
         
-        <!-- VISTA DE FORMULARIO PARA PESOS Y TIEMPOS -->
-        <record id="view_fleosa_mtp_form" model="ir.ui.view">
-            <field name="name">view.fleosa.mtp.form</field>
-            <field name="model">fleosa.mtp</field>
+        <!-- VISTA DE FORMULARIO PARA PESOS -->
+        <record id="view_fleosa_pesos_form" model="ir.ui.view">
+            <field name="name">view.fleosa.mtp.pesos.form</field>
+            <field name="model">fleosa.mtp.pesos</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Registro de pesos">
@@ -55,53 +55,85 @@
                             </group>
                             <separator string="Otros Pesos" colspan="4"/>
                             <field name="multi_pesos" widget="one2many_list" nolabel="1" colspan="4" attrs="{'readonly':[('state','=','terminado')]}"/>
+                            <field name="state" widget="statusbar" colspan="2"/>
+                            <button name="terminar" type="object" string="Terminar" states="pendiente" icon="gtk-execute"/>
                             <separator string="Observaciones" colspan="6"/>
                             <field name="observ_ent" colspan="6" nolabel="1"/>
-                            <field name="state" widget="statusbar" colspan="2"/>
-                        </page>
-                        <page string="Tiempos">
-                            <field name="fecha_salida_pension" attrs="{'readonly':['|',('state','=','viaje'),'|',('state','=','terminado')]}"/>
-                            <field name="fecha_llega_pension" attrs="{'readonly':['|',('state','=','pension'),'|',('state','=','terminado')]}"/>
-                            <field name="fecha_salida_entrega" attrs="{'readonly':[('state','=','terminado')]}"/>
-                            <field name="fecha_llega_entrega" attrs="{'readonly':[('state','=','terminado')]}"/>
-                            <button name="enviar" type="object" string="Registrar Salida" states="pendiente" icon="gtk-execute"/>
-                            <button name="entrada" type="object" string="Registrar Entrada" states="viaje" icon="gtk-execute"/>
                         </page>
                     </notebook>
                 </form>
             </field>
         </record>
+
+         <record id="view_fleosa_tiempos_form" model="ir.ui.view">
+             <field name="name">view.fleosa.mtp.tiempos.form</field>
+             <field name="model">fleosa.mtp.tiempos</field>
+             <field name="type">form</field>
+             <field name="arch" type="xml">
+                 <form string="Registro de tiempos">
+                    <field name="name" colspan="4"/>
+                    <field name="fecha_salida_pension" attrs="{'readonly':['|',('state','=','viaje'),'|',('state','=','terminado')]}"/>
+                    <field name="fecha_llega_pension" attrs="{'readonly':['|',('state','=','pension'),'|',('state','=','terminado')]}"/>
+                    <field name="fecha_salida_entrega" attrs="{'readonly':[('state','=','terminado')]}"/>
+                    <field name="fecha_llega_entrega" attrs="{'readonly':[('state','=','terminado')]}"/>
+                    <group col="6" colspan="4">
+                        <field name="state" widget="statusbar" colspan="2"/>
+                        <button name="enviar" type="object" string="Registrar Salida" states="pension" icon="gtk-execute"/>
+                        <button name="entrada" type="object" string="Registrar Entrada" states="viaje" icon="gtk-execute"/>
+                     </group>
+                 </form>
+             </field>
+         </record>
  
-        <record id="view_fleosa_mtp_tree" model="ir.ui.view">
-            <field name="name">view.fleosa.mtp.tree</field>
-            <field name="model">fleosa.mtp</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree colors="blue:state=='pendiente'; green:state=='terminado'" string="Registro de Tiempos y Pesos">
-                    <field name="name"/>
+         <record id="view_fleosa_pesos_tree" model="ir.ui.view">
+             <field name="name">view.fleosa.mtp.pesos.tree</field>
+             <field name="model">fleosa.mtp.pesos</field>
+             <field name="type">tree</field>
+             <field name="arch" type="xml">
+                 <tree colors="blue:state=='pendiente'; green:state=='terminado'" string="Registro de pesos">
+                     <field name="name"/>
                     <field name="unidad"/>
                     <field name="tanque"/>
                     <field name="cliente"/>
                     <field name="producto"/>
-                    <field name="fecha_salida_pension"/>
-                    <field name="fecha_salida_entrega" />
-                    <field name="fecha_llega_entrega" />
-                    <field name="fecha_llega_pension" />
                     <field name="state"/>
-                </tree>
-            </field>
-        </record>
+                 </tree>
+             </field>
+         </record>
          
+         <record id="view_fleosa_tiempos_tree" model="ir.ui.view">
+             <field name="name">view.fleosa.mtp.tiempos.tree</field>
+             <field name="model">fleosa.mtp.tiempos</field>
+             <field name="type">tree</field>
+             <field name="arch" type="xml">
+                 <tree colors="blue:state=='pension'; orange:state=='viaje'; green:state=='terminado'" string="Registro de tiempos">
+                     <field name="name"/>
+                     <field name="fecha_salida_pension"/>
+                     <field name="fecha_salida_entrega" />
+                     <field name="fecha_llega_entrega" />
+                     <field name="fecha_llega_pension" />
+                     <field name="state"/>
+                 </tree>
+             </field>
+         </record>
          
-         <record id="fleosa_mtp_action" model="ir.actions.act_window">
-             <field name="name">Pesos y Tiempos</field>
-             <field name="res_model">fleosa.mtp</field>
+         <record id="fleosa_mtp_action_p" model="ir.actions.act_window">
+             <field name="name">Pesos</field>
+             <field name="res_model">fleosa.mtp.pesos</field>
              <field name="view_type">form</field>
              <field name="view_mode">tree,form</field>
          </record>
-         
+         <record id="fleosa_mtp_action_t" model="ir.actions.act_window">
+             <field name="name">Tiempos</field>
+             <field name="res_model">fleosa.mtp.tiempos</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">tree,form</field>
+             <field eval="False" name="filter"/>
+         </record>
 
-         <menuitem action="fleosa_mtp_action" id="menu_action_fleosa_mtp" parent="menu_ml"/>
-         
+         <menuitem name="Pesos y tiempos" id="menu_mtp" parent="menu_fleosa"/>
+         <menuitem action="fleosa_mtp_action_p" id="menu_action_fleosa_mp" parent="menu_mtp"/>
+         <menuitem action="fleosa_mtp_action_t" id="menu_action_fleosa_mt" parent="menu_mtp"/>
+
     </data>
 </openerp>

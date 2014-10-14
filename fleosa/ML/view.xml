@@ -34,14 +34,20 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree colors="red:state=='cancelado';blue:state=='ventas';black:state=='borrador';green:state=='entregado';orange:state=='en_curso'" string="Logistica">
-                    <field name="name" select="1"/>
-                    <field name="date_order" select="1"/>
-                    <field name="partner_id" select="1"/>
-                    <field name="destinatario" select="1"/>
+                    <field name="name"/>
+                    <field name="date_order"/>
+                    <field name="partner_id"/>
+                    <field name="destinatario"/>
                     <field name="producto_transportar"/>
-                    <field name="user_id"/>
+                    <field name="user_id" string="Encargado"/>
                     <field name="unidad"/>
-                    <field name="state" select="1"/>
+                    <field name="contenedor"/>
+                    <field name="operador"/>
+                    <field name="state"/>
+                    <field name="origen" invisible="1"/>
+                    <field name="destino" invisible="1"/>
+                    <field name="fecha_embarque" invisible="1"/>
+                    <field name="fecha_entrega" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -53,17 +59,14 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Logistica">
-                    <group colspan="4" col="4">
-                        <group colspan="4" col="6">
-                            <field name="name"/>
-                            <field name="no_remision"/>
-                            <field name="date_order"/>
-                        </group>
-                        <field name="fecha_embarque"/>
-                        <field name="fecha_entrega"/>
-                        <field name="origen" states="ventas,en_curso,entregado,cancelado" />
-                        <field name="destino" states="ventas,en_curso,entregado,cancelado" />
-                    </group>
+                    <field name="name"/>
+                    <field name="date_order"/>
+                    <field name="remision"/>
+                    <field name="sellos"/>
+                    <field name="fecha_embarque"/>
+                    <field name="fecha_entrega"/>
+                    <field name="origen" states="ventas,en_curso,entregado,cancelado" />
+                    <field name="destino" states="ventas,en_curso,entregado,cancelado" />
                     <notebook colspan="4">
                         <page string="Datos de Envio">
                             <separator string="Datos del Producto a transportar" colspan="4"/>
@@ -96,6 +99,54 @@
                         </page>
                     </notebook>
                 </form>
+            </field>
+        </record>
+        
+        <!-- VISTA DE BUSQUEDA LOGISTICA (Pedidos de Venta) -->
+        <record id="view_fleosa_logistica_filter" model="ir.ui.view">
+            <field name="name">view.fleosa.logistica.filter</field>
+            <field name="model">fleosa.ml.cp</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Registro de Diesel">
+                    <filter icon="terp-stage" string="Borrador" domain="[('state','=','borrador')]"/>
+                    <filter icon="STOCK_MEDIA_PAUSE" string="Pendiente" domain="['|',('state','=','en_curso'),('state','=','ventas')]"/>
+                    <separator orientation="vertical"/>
+                    <filter icon="STOCK_YES" string="Entregado" domain="[('state','=','entregado')]"/>
+                    <filter icon="STOCK_NO" string="Cancelado" domain="[('state','=','cancelado')]"/>
+                    <field name="name"/>
+                    <field name="user_id" string="Encargado"/>
+                    <field name="date_order"/>
+                    <newline/>
+                    <group expand="0" string="Filtros...">
+                        <field name="producto_transportar"/>
+                        <field name="partner_id"/>
+                        <field name="destinatario"/>
+                        <field name="origen"/>
+                        <field name="destino"/>
+                        <newline/>
+                        <field name="unidad"/>
+                        <field name="contenedor"/>
+                        <field name="operador"/>
+                        <field name="fecha_embarque"/>
+                        <field name="fecha_entrega"/>
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Agrupar...">
+                        <filter string="Unidad" icon="STOCK_INFO" domain="[]" context="{'group_by':'unidad'}"/>
+                        <filter string="Contenedor" icon="STOCK_INFO" domain="[]" context="{'group_by':'contenedor'}"/>
+                        <filter string="Operador" icon="terp-personal" domain="[]" context="{'group_by':'operador'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Encargado" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Estado" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Origen" icon="STOCK_GOTO_BOTTOM" domain="[]" context="{'group_by':'origen'}"/>
+                        <filter string="Destino" icon="STOCK_GOTO_LAST" domain="[]" context="{'group_by':'destino'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Fecha Pedido" icon="terp-go-month" domain="[]" context="{'group_by':'date_order'}"/>
+                        <filter string="Fecha Embarque" icon="terp-go-month" domain="[]" context="{'group_by':'fecha_embarque'}"/>
+                        <filter string="Fecha Entrega" icon="terp-go-month" domain="[]" context="{'group_by':'fecha_entrega'}"/>
+                    </group>
+               </search>
             </field>
         </record>
         

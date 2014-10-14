@@ -1,0 +1,31 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"acceso_fleosa_ml_direcciones","Logistica Direcciones","model_fleosa_ml_direcciones","fleosa_dueno",1,0,0,0
+"acceso_fleosa_ml_direcciones","Logistica Direcciones","model_fleosa_ml_direcciones","fleosa_ventas_encargado",1,1,0,0
+"acceso_fleosa_ml_direcciones","Logistica Direcciones","model_fleosa_ml_direcciones","fleosa_logistica_encargado",1,1,1,1
+"acceso_fleosa_ml_cp","Logistica Cartas Porte","model_fleosa_ml_cp","fleosa_dueno",1,0,0,0
+"acceso_fleosa_ml_cp","Logistica Cartas Porte","model_fleosa_ml_cp","fleosa_ventas_encargado",1,1,0,0
+"acceso_fleosa_ml_cp","Logistica Cartas Porte","model_fleosa_ml_cp","fleosa_logistica_encargado",1,1,1,1
+"acceso_fleosa_mm_material","Mantenimiento Material","model_fleosa_mantenimiento_material","fleosa_mantenimiento_encargado",1,1,1,1
+"acceso_fleosa_mm_material","Mantenimiento Material","model_fleosa_mantenimiento_material","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mm_actividades","Mantenimiento Actividades","model_fleosa_mantenimiento_actividades","fleosa_mantenimiento_encargado",1,1,1,1
+"acceso_fleosa_mm_actividades","Mantenimiento Actividades","model_fleosa_mantenimiento_actividades","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mm_reparacion","Mantenimiento Reparacion","model_fleosa_mantenimiento_reparacion","fleosa_mantenimiento_encargado",1,1,1,1
+"acceso_fleosa_mm_reparacion","Mantenimiento Reparacion","model_fleosa_mantenimiento_reparacion","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mm_viaje","Mantenimiento Viaje","model_fleosa_mantenimiento_viaje","fleosa_mantenimiento_encargado",1,1,1,1
+"acceso_fleosa_mm_viaje","Mantenimiento Viaje","model_fleosa_mantenimiento_viaje","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mm_diesel","Mantenimiento Diesel","model_fleosa_mantenimiento_diesel","fleosa_mantenimiento_encargado",1,1,1,1
+"acceso_fleosa_mm_diesel","Mantenimiento Diesel","model_fleosa_mantenimiento_diesel","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mtp_pesos_multi","Tiempos y Pesos Multi","model_fleosa_mtp_pesos_multi","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mtp_pesos_multi","Tiempos y Pesos Multi","model_fleosa_mtp_pesos_multi","fleosa_ventas_encargado",1,0,0,0
+"acceso_fleosa_mtp_pesos_multi","Tiempos y Pesos Multi","model_fleosa_mtp_pesos_multi","fleosa_logistica_encargado",1,1,1,1
+"acceso_fleosa_mtp","Tiempos y Pesos","model_fleosa_mtp","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mtp","Tiempos y Pesos","model_fleosa_mtp","fleosa_ventas_encargado",1,0,0,0
+"acceso_fleosa_mtp","Tiempos y Pesos","model_fleosa_mtp","fleosa_logistica_encargado",1,1,1,1
+"acceso_fleosa_mu_contenedores","Contenedores","model_fleosa_mu_contenedores","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mu_contenedores","Contenedores","model_fleosa_mu_contenedores","fleosa_ventas_encargado",1,0,0,0
+"acceso_fleosa_mu_contenedores","Contenedores","model_fleosa_mu_contenedores","fleosa_mantenimiento_encargado",1,0,0,0
+"acceso_fleosa_mu_contenedores","Contenedores","model_fleosa_mu_contenedores","fleosa_logistica_encargado",1,1,1,1
+"acceso_fleosa_mu_unidades","Unidades","model_fleosa_mu_unidades","fleosa_dueno",1,0,0,0
+"acceso_fleosa_mu_unidades","Unidades","model_fleosa_mu_unidades","fleosa_ventas_encargado",1,0,0,0
+"acceso_fleosa_mu_unidades","Unidades","model_fleosa_mu_unidades","fleosa_mantenimiento_encargado",1,0,0,0
+"acceso_fleosa_mu_unidades","Unidades","model_fleosa_mu_unidades","fleosa_logistica_encargado",1,1,1,1
