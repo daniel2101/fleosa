@@ -77,6 +77,7 @@ class fleosa_mv_sale(osv.osv):
             'unidad': so.carta_porte_id.unidad.id,
             'tanque': so.carta_porte_id.contenedor.id,
             'cliente': so.carta_porte_id.partner_id.id,
+            'destinatario': so.carta_porte_id.destinatario.id,
             'producto': so.carta_porte_id.producto_transportar.id,
             'state': 'pendiente',
         }

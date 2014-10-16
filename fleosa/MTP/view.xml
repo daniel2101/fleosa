@@ -28,7 +28,8 @@
                         <field name="tanque"/>
                     </group>
                     <field name="cliente"/>
-                    <field name="producto"/>
+                    <field name="destinatario"/>
+                    <field name="producto" colspan="4"/>
                     <notebook colspan="4">
                         <page string="Pesos">
                             <group colspan="4" col="6">
@@ -82,6 +83,7 @@
                     <field name="unidad"/>
                     <field name="tanque"/>
                     <field name="cliente"/>
+                    <field name="destinatario"/>
                     <field name="producto"/>
                     <field name="fecha_salida_pension"/>
                     <field name="fecha_salida_entrega" />

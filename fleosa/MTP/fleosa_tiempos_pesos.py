@@ -168,6 +168,7 @@ class fleosa_mtp(osv.osv):
     'unidad': fields.many2one("fleosa.mu.unidades", 'Unidad', readonly=True, required=True),
     'tanque': fields.many2one("fleosa.mu.contenedores", 'Pipa', readonly=True, required=True),
     'cliente': fields.many2one("res.partner", 'Cliente', readonly=True, required=True),
+    'destinatario': fields.many2one("res.partner","Destinatario", readonly=True),
     'producto': fields.many2one("product.product", 'Producto', readonly=True, required=True),
     #PESOS
     'peso_tara_o':fields.float("Peso Tara origen"),

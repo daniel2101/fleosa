@@ -131,7 +131,7 @@
              <field eval="False" name="filter"/>
          </record>
 
-         <menuitem name="Pesos y tiempos" id="menu_mtp" parent="menu_fleosa"/>
+         <menuitem name="Pesos y tiempos ANTIGUO" id="menu_mtp" parent="menu_fleosa"/>
          <menuitem action="fleosa_mtp_action_p" id="menu_action_fleosa_mp" parent="menu_mtp"/>
          <menuitem action="fleosa_mtp_action_t" id="menu_action_fleosa_mt" parent="menu_mtp"/>
 

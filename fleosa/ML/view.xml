@@ -206,7 +206,7 @@
             <field name="view_id" ref="view_fleosa_logistica_calendar2"/>
         </record>
         
-        <menuitem name="Logistica" id="menu_ml" parent="menu_fleosa"/>
+        <menuitem name="Logistica" id="menu_ml" parent="menu_fleosa" sequence="1"/>
         <menuitem action="fleosa_ml_action" id="menu_action_fleosa_ml" parent="menu_ml"/>
         <menuitem action="fleosa_ml_action_calendar1" id="menu_action_fleosa_ml_calendar1" parent="menu_ml"/>
         <menuitem action="fleosa_ml_action_calendar2" id="menu_action_fleosa_ml_calendar2" parent="menu_ml"/>
