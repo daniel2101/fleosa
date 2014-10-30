@@ -32,8 +32,8 @@
 
 {
     "name" : "Fleosa",
-    "version" : "2.35.112",
-    "depends": ["base", "l10n_mx_states", "cfdi_rnet", "purchase", "hr"],
+    "version" : "2.35.115",
+    "depends": ["base", "l10n_mx_states", "purchase", "hr"],
     "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla, Luis Miguel",
     "website": "http://rnet.mx",
     "category" : "Generic Modules/Others",

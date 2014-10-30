@@ -48,8 +48,8 @@
 				%for line in o.order_line:
 					<td>${line.price_subtotal}</td>
 				%endfor
-				<td>${o.pesos_id.peso_bruto_o - o.pesos_id.peso_tara_o}</td>
-				<td>${o.pesos_id.peso_bruto_d - o.pesos_id.peso_tara_d}</td>
+				<td>${o.pesos_tiempos_id.peso_bruto_o - o.pesos_tiempos_id.peso_tara_o}</td>
+				<td>${o.pesos_tiempos_id.peso_bruto_d - o.pesos_tiempos_id.peso_tara_d}</td>
 			</tr>
 			<%
 				x = x + 1

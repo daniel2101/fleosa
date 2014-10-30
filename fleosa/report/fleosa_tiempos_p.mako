@@ -21,9 +21,9 @@
 			%>
 			%for o in objects:
 			<tr>
-				<td>${o.name.unidad.name}</td>
-				<td>${o.name.destinatario.name}</td>
-				<td>${o.name.producto_transportar.name}</td>
+				<td>${o.unidad.name}</td>
+				<td>${o.cliente.name}</td>
+				<td>${o.producto.name}</td>
 				<td>${o.name.partner_shipping_id.city}</td>
 				<td>${o.fecha_salida_entrega}</td>
 				<td>${o.name.fecha_entrega}</td>

@@ -11,12 +11,12 @@
 	      
 		<table  width="100%" class="subtitle">
                 <tr>
-                    <td>
+                    <td style="font-size:120%">
                         <b> ${ _('Carta Porte No.') } ${o.name}</b>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="text-align:right">
             			<b> ${ _('Lugar y Fecha de Expedición: ') }${ _('Morelia Michoacán a ') } ${o.date_order}</b>
                     </td>
                 </tr>
@@ -33,7 +33,7 @@
 					Destino:
 				</td>
 				<td width="40%" align="center">
-					<b>${format(o.carta_porte_id.destino)}</b>
+					<b>${format(o.partner_shipping_id.city)}, ${format(o.partner_shipping_id.state_id.name)}.</b>
 				</td>
 			</tr>
 			<tr>
@@ -131,13 +131,13 @@
 					<b>${_("Contenido")}</b>
 				</td>
 				<td width="15%">
-					<b>${_("Peso")}</b>
+					<b>${_("Peso Real")}</b>
 				</td>
 				<td width="10%">
 					<b>${_("Volumen")}</b>
 				</td>
 				<td width="15%">
-					<b>${_("Peso Est.")}</b>
+					<b>${_("Peso Estimado")}</b>
 				</td>
 			</tr>
 			<tr>
@@ -162,10 +162,16 @@
 					<p>ANEXO CERTIFICADO DE CALIDAD</p>
 				</td>
 				<td width="15%">
+                    % if o.pesos_tiempos_id.peso_neto_o:
+                        <p>Sellos: <b>${o.pesos_tiempos_id.peso_neto_o}</b></p>
+                    % else:
+                        <br/>
+                    % endif
 				</td>
 				<td width="10%">
 				</td>
 				<td width="15%">
+                    <p><b>${o.carta_porte_id.cantidad}</b></p>
 				</td>
 			</tr>
 		</table></br>

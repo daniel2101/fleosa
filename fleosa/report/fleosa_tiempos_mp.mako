@@ -22,13 +22,13 @@
 			%>
 			%for o in objects:
 			<tr>
-				<td>${o.name.unidad.name}</td>
-				<td>${o.name.unidad.placas}</td>
+				<td>${o.unidad.name}</td>
+				<td>${o.unidad.placas}</td>
 				<td>${o.name.operador.name}</td>
-				<td>${o.name.contenedor.name}</td>
-				<td>${o.name.contenedor.placas}</td>
+				<td>${o.tanque.name}</td>
+				<td>${o.tanque.placas}</td>
 				<td>${o.name.partner_id.name}</td>
-				<td>${o.name.producto_transportar.name}</td>
+				<td>${o.producto.name}</td>
 				<td>${o.name.partner_invoice_id.city}</td>
 				<td>${o.name.fecha_entrega}</td>
 
