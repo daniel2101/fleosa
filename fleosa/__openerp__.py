@@ -32,7 +32,7 @@
 
 {
     "name" : "Fleosa",
-    "version" : "2.35.115",
+    "version" : "2.35.116",
     "depends": ["base", "l10n_mx_states", "purchase", "hr"],
     "author" : "Salvador Daniel Pelayo Gómez, Ulises Vidal Rieder, David Padilla Bobadilla, Luis Miguel",
     "website": "http://rnet.mx",

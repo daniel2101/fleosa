@@ -134,9 +134,9 @@ class fleosa_mtp(osv.osv):
         res={}
         res['peso_neto_o'] = pbo - pto
         res['peso_neto_d'] = pbd - ptd
-        res['dif_peso_tara'] = pto - ptd
-        res['dif_peso_bruto'] = pbo - pbd
-        res['dif_peso_neto'] = res['peso_neto_o'] - res['peso_neto_d']
+        res['dif_peso_tara'] = ptd - pto
+        res['dif_peso_bruto'] = pbd - pbo
+        res['dif_peso_neto'] = res['peso_neto_d'] - res['peso_neto_o']
         res['toneladas_entregadas'] = res['peso_neto_d']
         self.write(cr, uid, ids, res)
         return {'value':res}
